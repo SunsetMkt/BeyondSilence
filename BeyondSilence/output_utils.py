@@ -8,15 +8,20 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s.%(funcName)s - %(levelname)s - %(message)s",
 )
 
+# Magic number for output file
+# BSOK : BeyondSilence OK
+# BSTR : BeyondSilence Triggered
+# BSER : BeyondSilence Error (Unused)
+
 
 def gen_regular_output():
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    return f"Last update time: {now_time}, everything is OK"
+    return f"BSOK\nLast update time: {now_time}, everything is OK"
 
 
 def gen_triggered_output(config):
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    output = f'GitHub user name: {config["github_user_name"]}' + "\n\n"
+    output = f'BSTR\nGitHub user name: {config["github_user_name"]}' + "\n\n"
     output += (
         f'Last update time: {now_time}, triggered by inactivity of {config["days_before"]} days'
         + "\n\n"
