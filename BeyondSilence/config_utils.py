@@ -151,6 +151,10 @@ def load_config(raw_config):
                 raise Exception(
                     f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict"
                 )
+        else:
+            # Edit "content" of message
+            message["content"] = Env.get_env_var(message["environ"])
+            logging.info(f"Found {sha256_of(message['environ'])} in environment")
 
     return config
 
