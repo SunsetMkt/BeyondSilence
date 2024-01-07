@@ -25,3 +25,7 @@ BeyondSilence recognizes prolonged user inactivity on GitHub (Max 89 days), offe
 Run `gen_config_env.py` to get env variable `BEYONDSILENCE_CONFIG` with the config.
 
 Set the env variable `BEYONDSILENCE_CONFIG` in GitHub Actions Secrets.
+
+Set env variables for each `environ` in GitHub Actions Secrets.
+
+Enable GitHub Actions.
