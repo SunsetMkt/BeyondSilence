@@ -8,7 +8,7 @@ on:
 permissions: write-all
 
 jobs:
-  update:
+  workflow:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code

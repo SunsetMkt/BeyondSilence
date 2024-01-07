@@ -36,7 +36,7 @@ if __name__ == "__main__":
         logging.info(output)
         # Rewrite README.md with new output
         with open("README.md", "w", encoding="utf-8") as f:
-            f.write(output)
+            f.write("```\n" + output + "\n```")
     else:
         # Not triggered
         logging.info("Everything is fine")
