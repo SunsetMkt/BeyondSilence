@@ -1,4 +1,5 @@
 import logging
+import json
 
 logging.basicConfig(
     level=logging.INFO,
@@ -12,6 +13,7 @@ from . import github_api as Gh
 from . import output_utils as Output
 
 OUTPUT_FILENAME = "output.txt"
+DUMP_CONFIG_WHEN_TRIGGERED = False
 
 if __name__ == "__main__":
     logging.info("Starting BeyondSilence")
@@ -37,6 +39,11 @@ if __name__ == "__main__":
         # Rewrite README.md with new output
         with open("README.md", "w", encoding="utf-8") as f:
             f.write("```\n" + output + "\n```")
+
+        if DUMP_CONFIG_WHEN_TRIGGERED:
+            logging.info("Dumping config")
+            with open("config.json", "w", encoding="utf-8") as f:
+                f.write(json.dumps(config))
     else:
         # Not triggered
         logging.info("Everything is fine")
