@@ -16,12 +16,12 @@ def gen_regular_output():
 
 def gen_triggered_output(config):
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    output = f'GitHub user name: {config["github_user_name"]}' + "\n"
+    output = f'GitHub user name: {config["github_user_name"]}' + "\n\n"
     output += (
         f'Last update time: {now_time}, triggered by inactivity of {config["days_before"]} days'
-        + "\n"
+        + "\n\n"
     )
-    output += f'Main description:\n{config["main_description"]}' + "\n"
+    output += f'Main description:\n{config["main_description"]}' + "\n\n"
     output += f"Messages:\n"
     for message in config["messages"]:
         output += f"{message['environ']}: {message['description']}\n"
