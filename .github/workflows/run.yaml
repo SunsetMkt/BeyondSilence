@@ -22,20 +22,17 @@ jobs:
           BEYONDSILENCE_KEYS: ${{ secrets.BEYONDSILENCE_KEYS }}
         run: |
           python -m BeyondSilence
-      - uses: actions/upload-artifact@v3
+      - name: Upload output
+        uses: actions/upload-artifact@v3
         continue-on-error: true # Don't fail the workflow
         with:
           name: output.txt
           path: output.txt
-      - name: Commit files
+      - name: Commit and push output
         continue-on-error: true # Don't fail the workflow
         run: |
           git add .
           git config --global user.email "bot@github.com"
           git config --global user.name "Github Bot"
           git commit -m "Update by Github Action"
-      - name: Push changes
-        continue-on-error: true # Don't fail the workflow
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git push
