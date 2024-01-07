@@ -61,3 +61,5 @@ Value: 我已经没有什么能教你的了
 End of output
 
 ```
+
+Please be aware that BeyondSilence is not designed for large strings, there's a 48 KB limit in GitHub Action secrets.
