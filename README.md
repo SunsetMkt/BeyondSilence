@@ -40,3 +40,24 @@ Run `gen_env.py` to get env variable `BEYONDSILENCE_CONFIG` and `BEYONDSILENCE_K
 Set `BEYONDSILENCE_CONFIG` and `BEYONDSILENCE_KEYS` in GitHub Actions Repository secrets.
 
 Enable GitHub Actions.
+
+The output when triggered will be written to `README.md`, for example:
+
+```
+GitHub user name: MurataHimeko
+
+Last update time: 2024-01-07 19:04:42, triggered by inactivity of 15 days
+
+Main description:
+这就是，最后一课了.....
+
+Messages:
+MESSAGE1: 姬子温柔地注视着你，不再言语。
+Value: 姬子温柔地注视着你
+
+MESSAGE2: 琪亚娜，我已经没有什么能教你的了。
+Value: 我已经没有什么能教你的了
+
+End of output
+
+```
