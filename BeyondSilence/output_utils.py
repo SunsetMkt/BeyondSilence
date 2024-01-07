@@ -25,7 +25,7 @@ def gen_triggered_output(config):
     output += f"Messages:\n"
     for message in config["messages"]:
         output += f"{message['environ']}: {message['description']}\n"
-        real_value = Env.get_env_var(message["environ"])
+        real_value = message["content"]
         if real_value:
             output += f"Value: {real_value}\n"
         else:

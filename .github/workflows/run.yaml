@@ -17,6 +17,9 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Run BeyondSilence
+        env:
+          BEYONDSILENCE_CONFIG: ${{ secrets.BEYONDSILENCE_CONFIG }}
+          BEYONDSILENCE_KEYS: ${{ secrets.BEYONDSILENCE_KEYS }}
         run: |
           python -m BeyondSilence
       - uses: actions/upload-artifact@v3

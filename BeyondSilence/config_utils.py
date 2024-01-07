@@ -13,12 +13,63 @@ from . import env_utils as Env
 
 DEFAULT_CONFIG_ENV_NAME = "BEYONDSILENCE_CONFIG"
 logging.info(f"DEFAULT_CONFIG_ENV_NAME: {DEFAULT_CONFIG_ENV_NAME}")
+DEFAULT_KEYS_ENV_NAME = "BEYONDSILENCE_KEYS"
+logging.info(f"DEFAULT_KEYS_ENV_NAME: {DEFAULT_KEYS_ENV_NAME}")
 
 raw_config = None
 
 
 def sha256_of(string):
     return hashlib.sha256(string.encode("utf-8")).hexdigest()
+
+
+def load_keys():
+    if Env.get_env_var(DEFAULT_KEYS_ENV_NAME):
+        raw_keys = Env.get_env_var(DEFAULT_KEYS_ENV_NAME)
+        logging.info(f"Using environment variable {DEFAULT_KEYS_ENV_NAME}")
+    elif os.path.exists("keys.json"):
+        # read from keys.json
+        with open("keys.json", "r", encoding="utf-8") as f:
+            raw_keys = f.read()
+        logging.info("Using keys.json")
+    elif os.path.exists("keys.example.json"):
+        # read from keys.example.json
+        with open("keys.example.json", "r", encoding="utf-8") as f:
+            raw_keys = f.read()
+        logging.info("Using keys.example.json")
+    else:
+        logging.info("No keys file found, keys is empty")
+        raw_keys = r"{}"
+    hash_of_raw_keys = sha256_of(raw_keys)
+    logging.info(f"SHA256 of raw keys: {hash_of_raw_keys}")
+    try:
+        keys = json.loads(raw_keys)
+        logging.info(f"Load keys from json")
+    except json.JSONDecodeError:
+        try:
+            decoded_keys = base64.b64decode(raw_keys).decode("utf-8")
+            keys = json.loads(decoded_keys)
+            logging.info(f"Load keys from Base64")
+        except (base64.binascii.Error, json.JSONDecodeError):
+            # Handle error when unable to load keys
+            keys = None
+            logging.error("Unable to load keys")
+            raise Exception("Unable to load keys")
+
+    # Validate and subprocess keys
+    # Keys is a dict with key:string pairs or empty dict
+    if not isinstance(keys, dict):
+        logging.error("Keys must be a dict")
+        raise Exception("Keys must be a dict")
+    if len(keys) == 0:
+        logging.info("Keys is empty, pass")
+    else:
+        for key in keys:
+            if not isinstance(keys[key], str):
+                logging.error(f"Key {sha256_of(key)} must be a string")
+                raise Exception(f"Key {sha256_of(key)} must be a string")
+
+    return keys
 
 
 def load_config(raw_config):
@@ -38,7 +89,14 @@ def load_config(raw_config):
             logging.error("Unable to load config")
             raise Exception("Unable to load config")
 
-    # Validate
+    # Try to load keys
+    try:
+        keys = load_keys()
+    except Exception as e:
+        logging.warning("Unable to load keys, keys is empty")
+        keys = {}
+
+    # Validate and subprocess config
 
     # github_user_name
     # Must be a string
@@ -80,14 +138,19 @@ def load_config(raw_config):
         ):
             logging.error("The values of 'environ' and 'description' must be strings")
             raise Exception("The values of 'environ' and 'description' must be strings")
-        # There must be an ENV for the environ name
+        # There must be an ENV for the environ name or environ name is in keys dict
         if not Env.get_env_var(message["environ"]):
-            logging.error(
-                f"There is no environment variable set for {sha256_of(message['environ'])}"
-            )
-            raise Exception(
-                f"There is no environment variable set for {sha256_of(message['environ'])}"
-            )
+            if message["environ"] in keys:
+                # Edit "content" of message
+                message["content"] = keys[message["environ"]]
+                logging.info(f"Found {sha256_of(message['environ'])} in keys dict")
+            else:
+                logging.error(
+                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict"
+                )
+                raise Exception(
+                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict"
+                )
 
     return config
 

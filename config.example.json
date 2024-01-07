@@ -1,15 +1,17 @@
 {
-  "github_user_name": "your_github_user_name",
-  "days_before": 30,
-  "main_description": "This is main description",
+  "github_user_name": "MurataHimeko",
+  "days_before": 15,
+  "main_description": "这就是，最后一课了.....",
   "messages": [
     {
       "environ": "MESSAGE1",
-      "description": "This is message 1"
+      "description": "姬子温柔地注视着你，不再言语。",
+      "content": ""
     },
     {
       "environ": "MESSAGE2",
-      "description": "This is message 2"
+      "description": "琪亚娜，我已经没有什么能教你的了。",
+      "content": ""
     }
   ]
 }
