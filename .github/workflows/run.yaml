@@ -14,6 +14,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Installing requirements
+        continue-on-error: true # Don't fail the workflow, probably already satisfied
         run: |
           pip install -r requirements.txt
       - name: Run BeyondSilence
