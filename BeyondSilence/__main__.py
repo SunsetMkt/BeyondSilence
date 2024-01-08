@@ -20,6 +20,8 @@ if __name__ == "__main__":
     config = Config.config
     output = ""
 
+    DUMP_CONFIG_WHEN_TRIGGERED = config["dump_config_when_triggered"]
+
     # Get user name
     user_name = config["github_user_name"]
 

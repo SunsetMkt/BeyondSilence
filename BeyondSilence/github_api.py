@@ -8,6 +8,8 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s.%(funcName)s - %(levelname)s - %(message)s",
 )
 
+from . import config_utils as Config
+
 
 def get_recent_activities_of(user_name):
     query_url = f"https://api.github.com/users/{user_name}/events/public"  # Return latest 90 days activities
@@ -20,6 +22,14 @@ def get_recent_activities_of(user_name):
             logging.info(f"Rate limit reset time: {reset_time}")
             wait_time = reset_time - time.time() + 1
             time.sleep(wait_time)
+        if req.status_code == 404:
+            logging.info(f"User {user_name} not found")
+            if Config.config["trigger_when_api_404"]:
+                logging.info(f"Trigger when API 404 is enabled")
+                return []  # Activities is empty, returning 91
+            else:
+                logging.error(f"User {user_name} not found")
+                raise Exception(f"User {user_name} not found")
     logging.info(f"Request status code: {req.status_code}")
     req.raise_for_status()
     logging.info(f"Request successful")

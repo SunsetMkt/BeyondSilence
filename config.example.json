@@ -2,6 +2,8 @@
   "github_user_name": "MurataHimeko",
   "days_before": 15,
   "main_description": "这就是，最后一课了.....",
+  "dump_config_when_triggered": true,
+  "trigger_when_api_404": false,
   "messages": [
     {
       "environ": "MESSAGE1",

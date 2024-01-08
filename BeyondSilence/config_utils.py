@@ -119,6 +119,18 @@ def load_config(raw_config):
         logging.error("main_description must be a string")
         raise Exception("main_description must be a string")
 
+    # dump_config_when_triggered
+    # Must be a boolean
+    if not isinstance(config["dump_config_when_triggered"], bool):
+        logging.error("dump_config_when_triggered must be a boolean")
+        raise Exception("dump_config_when_triggered must be a boolean")
+
+    # trigger_when_api_404
+    # Must be a boolean
+    if not isinstance(config["trigger_when_api_404"], bool):
+        logging.error("trigger_when_api_404 must be a boolean")
+        raise Exception("trigger_when_api_404 must be a boolean")
+
     # messages
     # Must be a list
     if not isinstance(config["messages"], list):

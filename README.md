@@ -1,6 +1,6 @@
 # BeyondSilence（超越寂静）
 
-BeyondSilence recognizes prolonged user inactivity on GitHub (Max 89 days), offering a gentle acknowledgment by showing pre-set messages.
+BeyondSilence recognizes prolonged user inactivity on GitHub (Max 89 days), offering a gentle acknowledgment by showing pre-set messages. It's designed to run on a public GitHub repository with GitHub Actions.
 
 ## Quick Start
 
@@ -11,6 +11,8 @@ BeyondSilence recognizes prolonged user inactivity on GitHub (Max 89 days), offe
   "github_user_name": "MurataHimeko",
   "days_before": 15,
   "main_description": "这就是，最后一课了.....",
+  "dump_config_when_triggered": true,
+  "trigger_when_api_404": false,
   "messages": [
     {
       "environ": "MESSAGE1",
