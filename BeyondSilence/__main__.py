@@ -37,13 +37,11 @@ if __name__ == "__main__":
         output = Output.gen_triggered_output(config)
         logging.info(output)
         # Rewrite README.md with new output
-        with open("README.md", "w", encoding="utf-8") as f:
-            f.write("```\n" + output + "\n```")
+        Output.save_output("```\n" + output + "\n```", "README.md")
 
         if DUMP_CONFIG_WHEN_TRIGGERED:
             logging.info("Dumping config")
-            with open("config.json", "w", encoding="utf-8") as f:
-                f.write(json.dumps(config))
+            Output.save_output(json.dumps(config), "config.json")
     else:
         # Not triggered
         logging.info("Everything is fine")
@@ -52,7 +50,6 @@ if __name__ == "__main__":
 
     # Save output
     logging.info(f"Saving output to {OUTPUT_FILENAME}")
-    with open(OUTPUT_FILENAME, "w", encoding="utf-8") as f:
-        f.write(output)
+    Output.save_output(output, OUTPUT_FILENAME)
 
     logging.info("Ending BeyondSilence")

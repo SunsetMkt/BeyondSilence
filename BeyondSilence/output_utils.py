@@ -1,5 +1,6 @@
 import logging
 import time
+import os
 
 from . import env_utils as Env
 
@@ -38,3 +39,11 @@ def gen_triggered_output(config):
         output += "\n"
     output += "End of output\n"
     return output
+
+
+def save_output(text, filename):
+    logging.info(f"Save output to {filename}")
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(text)
+    abs_path = os.path.abspath(filename)
+    logging.info(f"Output saved to {abs_path}")
