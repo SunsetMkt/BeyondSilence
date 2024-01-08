@@ -159,12 +159,16 @@ def load_config(raw_config):
                 # Edit "content" of message
                 message["content"] = keys[message["environ"]]
                 logging.info(f"Found {sha256_of(message['environ'])} in keys dict")
+            elif (
+                isinstance(message["content"], str) and message["content"] != ""
+            ):  # If message["content"] is string and not empty
+                logging.info(f"Found {sha256_of(message['environ'])} in config content")
             else:
                 logging.error(
-                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict"
+                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict or in config content"
                 )
                 raise Exception(
-                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict"
+                    f"There is no environment variable set for {sha256_of(message['environ'])} and {sha256_of(message['environ'])} is not in keys dict or in config content"
                 )
         else:
             # Edit "content" of message
