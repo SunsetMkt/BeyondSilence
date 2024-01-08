@@ -14,6 +14,7 @@ from . import config_utils as Config
 def get_recent_activities_of(user_name):
     query_url = f"https://api.github.com/users/{user_name}/events/public"  # Return latest 90 days activities
     req = None
+    fail_count = 0
     while req is None or req.status_code == 403 or req.status_code == 429:
         req = requests.get(query_url)
         if req.status_code == 403 or req.status_code == 429:
@@ -22,7 +23,7 @@ def get_recent_activities_of(user_name):
             logging.info(f"Rate limit reset time: {reset_time}")
             wait_time = reset_time - time.time() + 1
             time.sleep(wait_time)
-        if req.status_code == 404:
+        elif req.status_code == 404:
             logging.info(f"User {user_name} not found")
             if Config.config["trigger_when_api_404"]:
                 logging.info(f"Trigger when API 404 is enabled")
@@ -30,6 +31,20 @@ def get_recent_activities_of(user_name):
             else:
                 logging.error(f"User {user_name} not found")
                 raise Exception(f"User {user_name} not found")
+        else:
+            fail_count += 1
+            if fail_count >= 5:  # Attempt 5 times
+                logging.error(
+                    f"Failed to get recent activities of {user_name}, status code: {req.status_code}, return the bad response"
+                )
+                break
+            else:
+                logging.info(
+                    f"Failed to get recent activities of {user_name}, status code: {req.status_code}, retrying..."
+                )
+                req = None  # Reset req
+                time.sleep(5)
+
     logging.info(f"Request status code: {req.status_code}")
     req.raise_for_status()
     logging.info(f"Request successful")
