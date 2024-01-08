@@ -1,5 +1,6 @@
 import base64
 import json
+import sys
 
 
 def gen_env(envname, filename):
@@ -9,6 +10,10 @@ def gen_env(envname, filename):
     config_str = json.dumps(config)
 
     config_str = base64.b64encode(config_str.encode("utf-8")).decode("utf-8")
+
+    # If config_str is larger than 48 KB
+    if sys.getsizeof(config_str) > 48 * 1024:
+        raise Exception(f"{envname} is larger than 48 KB")
 
     print(f"{envname}={config_str}")
     print()
