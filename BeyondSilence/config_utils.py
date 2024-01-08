@@ -37,6 +37,9 @@ def load_keys():
         with open("keys.example.json", "r", encoding="utf-8") as f:
             raw_keys = f.read()
         logging.info("Using keys.example.json")
+        logging.warning(
+            "keys.example.json is for testing only, are you sure you want to use it?"
+        )
     else:
         logging.info("No keys file found, keys is empty")
         raw_keys = r"{}"
@@ -184,6 +187,9 @@ elif os.path.exists("config.example.json"):
     with open("config.example.json", "r", encoding="utf-8") as f:
         raw_config = f.read()
     logging.info("Using config.example.json")
+    logging.warning(
+        "config.example.json is for testing only, are you sure you want to use it?"
+    )
 else:
     logging.error("No config file found")
     raise Exception("No config file found")
