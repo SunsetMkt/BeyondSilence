@@ -15,7 +15,12 @@ def get_recent_activities_of(user_name):
     query_url = f"https://api.github.com/users/{user_name}/events/public"  # Return latest 90 days activities
     req = None
     fail_count = 0
-    while req is None or req.status_code == 403 or req.status_code == 429:
+    while (
+        req is None
+        or req.status_code == 403
+        or req.status_code == 429
+        or req.status_code == 404
+    ):
         req = requests.get(query_url)
         if req.status_code == 403 or req.status_code == 429:
             # Wait for rate limit to reset
@@ -35,7 +40,7 @@ def get_recent_activities_of(user_name):
             else:
                 logging.error(f"User {user_name} not found")
                 raise Exception(f"User {user_name} not found")
-        else:
+        elif not req.ok:  # Request failed
             fail_count += 1
             if fail_count >= 5:  # Attempt 5 times
                 logging.error(
