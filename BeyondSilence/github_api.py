@@ -22,6 +22,8 @@ def get_recent_activities_of(user_name):
             reset_time = int(req.headers.get("x-ratelimit-reset"))
             logging.info(f"Rate limit reset time: {reset_time}")
             wait_time = reset_time - time.time() + 1
+            if wait_time < 0: # Failsafe
+                wait_time = 0
             req = None  # Reset req
             time.sleep(wait_time)
         elif req.status_code == 404:
