@@ -1,5 +1,9 @@
 # BeyondSilence（超越寂静）
 
+> Keeping alive is much more important than keeping a will.
+>
+> You don't have to face things alone.
+
 BeyondSilence recognizes prolonged user inactivity on GitHub (Max 89 days), offering a gentle acknowledgment by showing pre-set messages. It's designed to run on a public GitHub repository with GitHub Actions.
 
 ## Quick Start
